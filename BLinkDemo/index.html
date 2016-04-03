@@ -3,13 +3,41 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>TypeScript HTML App</title>
-    <link rel="stylesheet" href="app.css" type="text/css" />
-    <script src="app.js"></script>
+    <title>Facebook-Like Preview</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-alpha.26/angular2.sfx.dev.js"></script>
 </head>
 <body>
-    <h1>TypeScript HTML App</h1>
+    <h1>Facebook-Like Preview</h1>
+    <my-app></my-app>
 
-    <div id="content"></div>
+    <script>
+        function AppComponent() {
+            this.todos = [];
+            this.addTodo = function (todo) {
+                this.todos.push(todo.value);
+                todo.value = null;
+                return false;
+            }
+        }
+
+        AppComponent.annotations = [
+          new angular.ComponentAnnotation({
+              selector: 'my-app'
+          }),
+          new angular.ViewAnnotation({
+              template: '<h3>TODO</h3>' +
+                        '<ul><li *ng-for="#todo of todos">{{ todo }}</li></ul>' +
+                        '<form (submit)="addTodo(todotext)"><input #todotext><button>add #{{todos.length + 1}}</button></form>',
+              directives: [angular.NgFor]
+          })
+        ];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            angular.bootstrap(AppComponent);
+        });
+    </script>
+
 </body>
 </html>
