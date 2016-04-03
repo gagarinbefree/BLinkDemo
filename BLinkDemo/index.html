@@ -30,50 +30,91 @@
     
     <br />
 
-    <div class="row">
-        <div class="hidden-xs hidden-sm col-md-4"></div>
-
-        <div class="col-xs-12 col-sm-12 col-md-4">            
-            <div ng-app="todoApp" ng-controller="todoController">
+    <div ng-app="todoApp" ng-controller="todoController">
+        <div class="row">            
+            <div class="hidden-xs hidden-sm col-md-4"></div>
+            <div class="col-xs-12 col-sm-12 col-md-4">                
                 <form ng-submit="add()">
                     <div class="form-group">
-                        <input class="form-control input-lg" ng-model="title" >
+                        <input class="form-control input-lg" ng-model="title">
                     </div>
                     <button type="submit" class="btn btn-success btn-lg pull-right"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> submit</button>
                 </form>
-                <ul>
-                    <li ng-repeat="t in tasks track by $index" ng-bind="tasks[$index]"><button ng-click="delete()">x</button></li>
-                </ul>
             </div>
+            <div class="hidden-xs hidden-sm col-md-4"></div>        
         </div>
 
-        <div class="hidden-xs hidden-sm col-md-4"></div>
+        <br />
+
+        <div class="row">
+            <div class="hidden-xs hidden-sm col-md-4"></div>
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <div ng-repeat="t in tasks track by $index">
+                    <div class="lead" ng-bind="tasks[$index].Title"></div>
+                    <button ng-click="delete()">x</button>
+                </div> 
+            </div>
+            <div class="hidden-xs hidden-sm col-md-4"></div>     
+        </div>
+
+        <div class="row">
+            <div class="hidden-xs hidden-sm col-md-3"></div>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="false">
+                    <div class="carousel-inner" role="listbox">
+                        <div ng-repeat="t in tasks[$index].Images track by $index2">
+                            <div class="active">
+
+                                <div class='box' style="background-color:gray">
+                                    <!--<a href="???">
+                                        <div class='hover-zoom content' style="background-image:url(ng-bind="tasks[$index].Images[$index2]" );">
+                                        </div>
+                                        <div style="position: absolute;margin-top: -48px;margin-left: 10px;">
+                                            <h4><span class="label label-default"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> @Model.Host</span></h4>
+                                        </div>
+                                    </a>-->
+                                </div>
+
+                            </div>                            
+                        </div>
+
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden-xs hidden-sm col-md-3"></div>
+            </div>
+        </div>
     </div>
 
-    <!--<div id="inputTemplate" class="hidden">
-        <form (submit)="addPreview(todotext)">
-            <div class="form-group">
-                <input class="form-control input-lg" #todotext />
-            </div>
-            <button type="submit" class="btn btn-success btn-lg pull-right"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> submit</button>
-        </form>
-        <ul>
-            <li *ng-for="#todo of todos">{{ todo }}</li>
-        </ul>    
-    </div>-->
-
     <script>
-    angular.module('todoApp', [])
-        .controller('todoController', function ($scope, $http) {
-            $scope.tasks = [];
-            $scope.add = function () {
-                $scope.tasks.push($scope.title);
-                $scope.title = "";
-            }
-            $scope.delete = function () {
-                $scope.tasks.splice(this.$index, 1);
-            }
-        })
+        angular.module('todoApp', [])
+            .controller('todoController', function ($scope, $http) {
+                $scope.tasks = [];
+                $scope.add = function () {
+                    $http({ method: "post", url: 'http://localhost/BLink/Api/Preview', data: '=' + $scope.title })
+                    .success(function (data) {
+                        $scope.tasks.push(data);
+                        $scope.title = "";
+                    })
+                    .error(function (message) {
+
+                    });
+                };
+
+                $scope.delete = function () {
+                    $scope.tasks.splice(this.$index, 1);
+                };
+            }).config(function ($httpProvider) {
+                $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+            });
     </script>
 
 </body>
