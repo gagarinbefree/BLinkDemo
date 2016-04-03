@@ -1,42 +1,79 @@
-﻿<!DOCTYPE html>
+﻿    <!DOCTYPE html>
 
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>Facebook-Like Preview</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" />        
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://code.angularjs.org/2.0.0-alpha.26/angular2.sfx.dev.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.2.min.js" integrity="sha256-lZFHibXzMHo3GGeehn1hudTAP3Sc0uKXBXAzHX1sjtk=" crossorigin="anonymous"></script>
+    
+    <script src="https://code.angularjs.org/1.5.3/angular.js"></script>
+
+    <style>
+        *{border-radius:0px; -moz-border-radius:0px; -webkit-border-radius:0px}
+        .jumbotron h1 small{display:block}
+        .jumbotron p {width:500px}
+        .hidden {display: none}
+    </style>
 </head>
 <body>
-    <h1>Facebook-Like Preview</h1>
-    <my-app></my-app>
+    
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="jumbotron text-center">
+                <h1>Facebook-Like Link Preview</h1>                
+            </div>
+        </div>
+    </div>
+    
+    <br />
+
+    <div class="row">
+        <div class="hidden-xs hidden-sm col-md-4"></div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4">            
+            <div ng-app="todoApp" ng-controller="todoController">
+                <form ng-submit="add()">
+                    <div class="form-group">
+                        <input class="form-control input-lg" ng-model="title" >
+                    </div>
+                    <button type="submit" class="btn btn-success btn-lg pull-right"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> submit</button>
+                </form>
+                <ul>
+                    <li ng-repeat="t in tasks track by $index" ng-bind="tasks[$index]"><button ng-click="delete()">x</button></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="hidden-xs hidden-sm col-md-4"></div>
+    </div>
+
+    <!--<div id="inputTemplate" class="hidden">
+        <form (submit)="addPreview(todotext)">
+            <div class="form-group">
+                <input class="form-control input-lg" #todotext />
+            </div>
+            <button type="submit" class="btn btn-success btn-lg pull-right"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> submit</button>
+        </form>
+        <ul>
+            <li *ng-for="#todo of todos">{{ todo }}</li>
+        </ul>    
+    </div>-->
 
     <script>
-        function AppComponent() {
-            this.todos = [];
-            this.addTodo = function (todo) {
-                this.todos.push(todo.value);
-                todo.value = null;
-                return false;
+    angular.module('todoApp', [])
+        .controller('todoController', function ($scope, $http) {
+            $scope.tasks = [];
+            $scope.add = function () {
+                $scope.tasks.push($scope.title);
+                $scope.title = "";
             }
-        }
-
-        AppComponent.annotations = [
-          new angular.ComponentAnnotation({
-              selector: 'my-app'
-          }),
-          new angular.ViewAnnotation({
-              template: '<h3>TODO</h3>' +
-                        '<ul><li *ng-for="#todo of todos">{{ todo }}</li></ul>' +
-                        '<form (submit)="addTodo(todotext)"><input #todotext><button>add #{{todos.length + 1}}</button></form>',
-              directives: [angular.NgFor]
-          })
-        ];
-
-        document.addEventListener('DOMContentLoaded', function () {
-            angular.bootstrap(AppComponent);
-        });
+            $scope.delete = function () {
+                $scope.tasks.splice(this.$index, 1);
+            }
+        })
     </script>
 
 </body>
