@@ -4,17 +4,58 @@
 <head>
     <meta charset="utf-8" />
     <title>Facebook-Like Preview</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" />        
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" />            
     <script src="https://code.jquery.com/jquery-1.12.2.min.js" integrity="sha256-lZFHibXzMHo3GGeehn1hudTAP3Sc0uKXBXAzHX1sjtk=" crossorigin="anonymous"></script>
     
     <script src="https://code.angularjs.org/1.5.3/angular.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js"></script>
 
     <style>
         *{border-radius:0px; -moz-border-radius:0px; -webkit-border-radius:0px}
-        .jumbotron h1 small{display:block}
-        .jumbotron p {width:500px}
-        .hidden {display: none}
+        .jumbotron h1 small
+        {
+            display:block
+        }
+        
+        .jumbotron p {
+            width:500px
+        }
+
+        .hidden {
+            display: none
+        }
+
+        .content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            vertical-align: bottom;
+            background-size:120%;
+
+            -webkit-transition: all 0.5s ease-in-out;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .content:hover {
+            background-size:100%;
+        }
+
+        .box {
+            position: relative;
+            width: 100%; /* desired width */
+        }
+
+        .box:before {
+            content: "";
+            display: block;
+            padding-top: 42.86%; /* initial ratio of 1:1*/
+        }
     </style>
 </head>
 <body>
@@ -30,31 +71,175 @@
     
     <br />
 
-    <div ng-app="todoApp" ng-controller="todoController">
-        <div class="row">            
+    <div ng-app="previewApp" ng-controller="previewController">
+        <div class="row">
             <div class="hidden-xs hidden-sm col-md-4"></div>
-            <div class="col-xs-12 col-sm-12 col-md-4">                
-                <form ng-submit="add()">
-                    <div class="form-group">
-                        <input class="form-control input-lg" ng-model="title">
-                    </div>
-                    <button type="submit" class="btn btn-success btn-lg pull-right"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> submit</button>
-                </form>
-            </div>
-            <div class="hidden-xs hidden-sm col-md-4"></div>        
-        </div>
+            <div class="col-xs-12 col-sm-12 col-md-4">
 
+                <div class="form-group">
+                    <input class="form-control input-lg" ng-model="link">
+                </div>
+                <button class="btn btn-success btn-lg pull-right" ng-click="loadPreview()"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> submit</button>
+
+            </div>
+            <div class="hidden-xs hidden-sm col-md-4"></div>
+        </div>
         <br />
 
+        <!--TITLE-->
         <div class="row">
+            <div class="hidden-xs hidden-sm col-md-4"></div>
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <div class="lead" ng-bind="preview.Title"></div>
+            </div>
+            <div class="hidden-xs hidden-sm col-md-4"></div>
+        </div>
+
+        <!--CAROUSEL--> 
+        <div class="row">
+            <div class="hidden-xs hidden-sm col-md-4"></div>
+            
+            <div class="col-xs-12 col-sm-12 col-md-4">
+
+
+
+
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">                    
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox">
+                        <!--<div ng-repeat="imageUrl in preview.Images">-->
+                        <div class="item" ng-repeat="imageUrl in preview.Images" ng-class="activeClass($first)">
+                            <div class='box' style="background-color:gray">
+                                <div class='hover-zoom content' back-img={{imageUrl}}></div>
+                            </div>
+                        </div>                           
+                        <!--</div>-->
+                    </div>
+                    <!-- Controls -->
+                    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                <!--<div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="false">
+                    <div class="carousel-inner" role="listbox">
+                        <div ng-repeat="imageUrl in preview.Images">
+                            <div class="active">
+                                <div class='box' style="background-color:gray">
+                                    <div class='hover-zoom content' back-img={{imageUrl}}></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    
+                    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                                      
+                </div>
+
+            </div>-->  
+            
+            <div class="hidden-xs hidden-sm col-md-4"></div>
+                
+        </div>
+    </div>  
+
+
+    <script>
+        var model = {
+            items: [
+            ]
+        };
+
+        var previewApp = angular.module("previewApp", []);
+
+        previewApp.controller("previewController", function ($scope, $http) {
+
+            $scope.link = "";
+            $scope.preview;
+            $scope.list = model;
+            $scope.error = "";
+
+            $scope.loadPreview = function () {
+                $http({ method: "post", url: 'http://localhost/BLink/Api/Preview', data: '=' + $scope.link })
+                .success(function (data) {
+                    $scope.preview = data;                    
+                    $scope.link = "";
+                    $scope.error = "";
+                })
+                .error(function (error) {
+                    $scope.preview = null;
+                    $scope.link = "";
+                    $scope.error = error;
+                });
+            };
+
+            $scope.activeClass = function (isFirst) {
+                return isFirst ? "active" : "";
+            };
+
+
+        }).config(function ($httpProvider) {
+            $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+        });
+
+        previewApp.directive('backImg', function () {
+            return function (scope, element, attrs) {
+                var url = attrs.backImg;
+                element.css({
+                    'background-image': 'url(' + url + ')'                    
+                });
+            };
+        });
+
+        $(document).ready(function () {
+
+            //debugger;
+
+            $('.carousel').carousel();
+        });
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+<!--<div class="row">
             <div class="hidden-xs hidden-sm col-md-4"></div>
             <div class="col-xs-12 col-sm-12 col-md-4">
                 <div ng-repeat="t in tasks track by $index">
                     <div class="lead" ng-bind="tasks[$index].Title"></div>
                     <button ng-click="delete()">x</button>
-                </div> 
+                </div>
             </div>
-            <div class="hidden-xs hidden-sm col-md-4"></div>     
+            <div class="hidden-xs hidden-sm col-md-4"></div>
         </div>
 
         <div class="row">
@@ -66,56 +251,55 @@
                             <div class="active">
 
                                 <div class='box' style="background-color:gray">
-                                    <!--<a href="???">
+
+                                    <div ng-bind="tasks[$index].Images"></div>
+
+                                    <a href="???">
                                         <div class='hover-zoom content' style="background-image:url(ng-bind="tasks[$index].Images[$index2]" );">
                                         </div>
                                         <div style="position: absolute;margin-top: -48px;margin-left: 10px;">
                                             <h4><span class="label label-default"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> @Model.Host</span></h4>
                                         </div>
-                                    </a>-->
+                                    </a>
                                 </div>
 
-                            </div>                            
+                            </div>
                         </div>
 
-                        <!-- Controls -->
-                        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
+<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+</a>
+<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+</a>
                     </div>
                 </div>
-                <div class="hidden-xs hidden-sm col-md-3"></div>
+<div class="hidden-xs hidden-sm col-md-3"></div>
             </div>
         </div>
     </div>
 
-    <script>
-        angular.module('todoApp', [])
-            .controller('todoController', function ($scope, $http) {
-                $scope.tasks = [];
-                $scope.add = function () {
-                    $http({ method: "post", url: 'http://localhost/BLink/Api/Preview', data: '=' + $scope.title })
-                    .success(function (data) {
-                        $scope.tasks.push(data);
-                        $scope.title = "";
-                    })
-                    .error(function (message) {
+<script>
+    angular.module('todoApp', [])
+        .controller('todoController', function ($scope, $http) {
+            $scope.tasks = [];
+            $scope.add = function () {
+                $http({ method: "post", url: 'http://localhost/BLink/Api/Preview', data: '=' + $scope.title })
+                .success(function (data) {
+                    $scope.tasks.push(data);
+                    $scope.title = "";
+                })
+                .error(function (message) {
 
-                    });
-                };
+                });
+            };
 
-                $scope.delete = function () {
-                    $scope.tasks.splice(this.$index, 1);
-                };
-            }).config(function ($httpProvider) {
-                $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-            });
-    </script>
-
-</body>
-</html>
+            $scope.delete = function () {
+                $scope.tasks.splice(this.$index, 1);
+            };
+        }).config(function ($httpProvider) {
+            $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+        });
+</script>-->
