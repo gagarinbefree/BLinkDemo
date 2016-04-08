@@ -58,7 +58,13 @@
             content: "";
             display: block;
             padding-top: 42.86%; /* initial ratio of 1:1*/
-    }
+        }
+
+        .hostLabel {
+            position: absolute;
+            margin-top: -48px;
+            margin-left: 10px;
+        }
 
     </style>
 </head>
@@ -123,10 +129,10 @@
                 <div class="col-xs-12 col-sm-12 col-md-4">
                     <uib-carousel active="active" interval="0" no-wrap="noWrapSlides">
                         <uib-slide ng-repeat="image in preview.Images" active="image.Active" index="$index">
-                            <div class='box'>
-                                <div class='hover-zoom content' back-img="{{image.Url}}"></div>
+                            <div class="box">
+                                <div class="hover-zoom content" back-img="{{image.Url}}"></div>
 
-                                <div style="position: absolute;margin-top: -48px;margin-left: 10px;">
+                                <div class="hostLabel">
                                     <h4><span class="label label-default"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> {{preview.Host}}</span></h4>
                                 </div>
                             </div>
@@ -152,54 +158,54 @@
 
         <br />
 
-        <div ng-show="posts.length > 0">
+        <div ng-repeat="post in posts">
 
-            <div ng-repeat="post in posts">
+            <!--TITLE-->
+            <div class="row">
+                <div class="hidden-xs hidden-sm col-md-4"></div>
 
-                <!--TITLE-->
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <hr />
+                    <div class="lead">{{post.Title}}</div>
+                </div>
+
+                <div class="hidden-xs hidden-sm col-md-4"></div>
+            </div>
+
+            <!--IMAGE-->
+            <div ng-show="post.Image.length > 0">
                 <div class="row">
                     <div class="hidden-xs hidden-sm col-md-4"></div>
 
                     <div class="col-xs-12 col-sm-12 col-md-4">
-                        <div class="lead">{{post.Title}}</div>
-                    </div>
+                        <div class="box">
+                            <div class="hover-zoom content" back-img="{{post.Image}}"></div>
 
-                    <div class="hidden-xs hidden-sm col-md-4"></div>
-                </div>
-
-                <!--IMAGE-->
-                <div ng-show="posts.Image.length > 0">
-                    <div class="row">
-                        <div class="hidden-xs hidden-sm col-md-4"></div>
-
-                        <div class="col-xs-12 col-sm-12 col-md-4">
-                            <div class='box'>
-                                <div class='hover-zoom content' back-img="{{post.Image}}"></div>
-
-                                <div style="position: absolute;margin-top: -48px;margin-left: 10px;">
-                                    <h4><span class="label label-default"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {{post.Host}}</span></h4>
-                                </div>
+                            <div class="hostLabel">
+                                <h4><span class="label label-default"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {{post.Host}}</span></h4>
                             </div>
                         </div>
-
-                        <div class="hidden-xs hidden-sm col-md-4"></div>
                     </div>
-                </div>
 
-                <!--DESCRIPTION-->
-                <div class="row">                    
-                    <div class="hidden-xs hidden-sm col-md-4"></div>
-
-                    <div class="col-xs-12 col-sm-12 col-md-4">
-                        <p>{{post.Description}}</p>                  
-                        <br />
-                    </div>
-                    
                     <div class="hidden-xs hidden-sm col-md-4"></div>
                 </div>
             </div>
+
+            <!--DESCRIPTION-->
+            <div class="row">                    
+                <div class="hidden-xs hidden-sm col-md-4"></div>
+
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <br />
+                    <p>{{post.Description}}</p>                  
+                    <br />
+                </div>
+                    
+                <div class="hidden-xs hidden-sm col-md-4"></div>
+            </div>
         </div>
     </div>
+    
         
     <script>
         var previewApp = angular.module("previewApp", ['ui.bootstrap']);
@@ -230,9 +236,6 @@
             }
 
             $scope.postPreview = function () {
-                
-                debugger;
-
                 var sp = $scope.preview;
                 $scope.posts.splice(0, 0, {
                     Title: sp.Title
