@@ -91,44 +91,62 @@
         </div>
         <br />
 
-        <!--TITLE-->
-        <div class="row">
-            <div class="hidden-xs hidden-sm col-md-4"></div>
-            <div class="col-xs-12 col-sm-12 col-md-4">
-                <div class="lead" ng-bind="preview.Title"></div>
+        <div ng-show="error.length > 0">
+            <div class="row">
+                <div class="hidden-xs hidden-sm col-md-4"></div>
+                
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        {{error}}
+                    </div>
+                </div>             
+
+                <div class="hidden-xs hidden-sm col-md-4"></div>
             </div>
-            <div class="hidden-xs hidden-sm col-md-4"></div>
         </div>
 
-        <!--CAROUSEL--> 
-        <div class="row">
-            <div class="hidden-xs hidden-sm col-md-4"></div>
-                     
-            <div class="col-xs-12 col-sm-12 col-md-4">
-                <uib-carousel active="active" interval="0" no-wrap="noWrapSlides">
-                    <uib-slide ng-repeat="imageUrl in preview.Images" index="$index">
-                        <div class='box'>
-                            <div class='hover-zoom content' back-img="{{imageUrl}}"></div>
+        <div ng-show="preview != null">
+            <!--TITLE-->
+            <div class="row">
+                <div class="hidden-xs hidden-sm col-md-4"></div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <div class="lead" ng-bind="preview.Title"></div>
+                </div>
+                <div class="hidden-xs hidden-sm col-md-4"></div>
+            </div>
 
-                            <div style="position: absolute;margin-top: -48px;margin-left: 10px;">
-                                <h4><span class="label label-default"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> {{preview.Host}}</span></h4>
+            <!--CAROUSEL-->
+            <div class="row">
+                <div class="hidden-xs hidden-sm col-md-4"></div>
+
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <uib-carousel active="active" interval="0" no-wrap="noWrapSlides">
+                        <uib-slide ng-repeat="imageUrl in preview.Images" index="$index">
+                            <div class='box'>
+                                <div class='hover-zoom content' back-img="{{imageUrl}}"></div>
+
+                                <div style="position: absolute;margin-top: -48px;margin-left: 10px;">
+                                    <h4><span class="label label-default"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> {{preview.Host}}</span></h4>
+                                </div>
                             </div>
-                        </div>
-                    </uib-slide>
-                </uib-carousel>
+                        </uib-slide>
+                    </uib-carousel>
+                </div>
+
+                <div class="hidden-xs hidden-sm col-md-4"></div>
             </div>
 
-            <div class="hidden-xs hidden-sm col-md-4"></div>
-        </div>  
-
-        <div class="row">
-            <div class="hidden-xs hidden-sm col-md-4"></div>
-            <div class="col-xs-12 col-sm-12 col-md-4">
-                <br />
-                <p><strong>{{preview.Description}}</strong></p>
-                <p>{{preview.Text}}</p>
+            <div class="row">
+                <div class="hidden-xs hidden-sm col-md-4"></div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <br />
+                    <p><strong>{{preview.Description}}</strong></p>
+                    <p>{{preview.Text}}</p>
+                </div>
+                <div class="hidden-xs hidden-sm col-md-4"></div>
             </div>
-            <div class="hidden-xs hidden-sm col-md-4"></div>
         </div>
     </div>
 
@@ -141,9 +159,12 @@
 
         previewApp.controller("previewController", function ($scope, $http) {
             $scope.link = "";
-            $scope.preview;
+            $scope.preview = null;
             $scope.list = null;
             $scope.error = "";
+
+            var x = "";
+            x.length
 
             $scope.testLink = "https://lenta.ru/articles/2016/04/07/allinclusive/";
 
@@ -151,6 +172,9 @@
 
                 $http({ method: "post", url: 'http://localhost/BLink/Api/Preview', data: '=' + $scope.link })
                 .success(function (data) {
+
+                    debugger;
+
                     $scope.preview = data;                    
                     $scope.link = "";
                     $scope.error = "";
