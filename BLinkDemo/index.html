@@ -127,9 +127,9 @@
                 <div class="hidden-xs hidden-sm col-md-4"></div>
 
                 <div class="col-xs-12 col-sm-12 col-md-4">
-                    <uib-carousel active="active" interval="0" no-wrap="noWrapSlides">
-                        <uib-slide ng-repeat="image in preview.Images" active="image.Active" index="$index">
-                            <div class="box">
+                    <uib-carousel active="active" interval="0" no-wrap="noWrapSlides" id="previewCarousel">
+                        <uib-slide ng-repeat="image in preview.Images" active="image.Active" index="$index" ng-model="image.Active" class="itemCarousel" url="{{image.Url}}">
+                            <div class="box" ng-model="image.Active">
                                 <div class="hover-zoom content" back-img="{{image.Url}}"></div>
 
                                 <div class="hostLabel">
@@ -210,7 +210,7 @@
     <script>
         var previewApp = angular.module("previewApp", ['ui.bootstrap']);
 
-        previewApp.controller("previewController", function ($scope, $http, helperService) {
+        previewApp.controller("previewController", function ($scope, $http, imagesService) {
             $scope.link = "";
             $scope.preview = null;
             $scope.list = null;
@@ -221,7 +221,8 @@
                 $http({ method: "post", url: 'http://localhost/BLink/Api/Preview', data: '=' + $scope.link })
                 .success(function (data) {
                     if (typeof (data) !== "undefined" && data !== null) {
-                        helperService.addActive(data);
+
+                        imagesService.setActiveImage(data, 0);
 
                         $scope.preview = data;
                         $scope.link = "";
@@ -239,7 +240,7 @@
                 var sp = $scope.preview;
                 $scope.posts.splice(0, 0, {
                     Title: sp.Title
-                    , Image: $scope.getActiveImage()
+                    , Image: imagesService.getActiveImage(sp.Images)
                     , Description: sp.Description
                     , Text: sp.Text
                     , Url: sp.Url
@@ -248,15 +249,6 @@
 
                 $scope.preview = null;
             }
-
-            $scope.getActiveImage = function () {
-                var actives = $scope.preview.Images.filter(function (s) { return s.Active; });
-                if (typeof (actives) !== "undefined" && actives.length > 0)
-                    return actives[0].Url;
-                
-                return "";
-            }
-
         }).config(function ($httpProvider) {
             $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -273,18 +265,31 @@
             }
         });
 
-        previewApp.factory("helperService", function () {
-            return {
-                addActive: function (data) {
-                    for (var ii = 0; ii < data.Images.length; ii++) {
-                        data.Images[ii] = {
-                            Url: data.Images[ii]
-                            , Active: ii == 0 
-                        }
+        previewApp.service('imagesService', function() {
+            this.setActiveImage = function (data, index) {
+                for (var ii = 0; ii < data.Images.length; ii++) {
+                    data.Images[ii] = {
+                        Url: data.Images[ii]
+                        , Active: ii == index 
                     }
                 }
             }
-        });
+     
+            this.getActiveImage = function (images) {
+
+                // bad hack
+                var active = $('.itemCarousel.active');
+                if (active.length > 0)
+                    return active.attr('url')
+
+                //var actives = images.filter(function (s) { return s.Active; });
+                //if (typeof (actives) !== 'undefined' && actives.length > 0)
+                //    return actives[0].Url;
+                
+                return "";
+            }
+        });        
     </script>
 </body>
 </html>
+
