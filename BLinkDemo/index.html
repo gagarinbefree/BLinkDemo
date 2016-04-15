@@ -303,14 +303,15 @@
      
             this.getActiveImage = function (images) {
 
-                // bad hack
-                var active = $('.itemCarousel.active');
-                if (active.length > 0)
-                    return active.attr('url')
-
+                // not work
                 //var actives = images.filter(function (s) { return s.Active; });
                 //if (typeof (actives) !== 'undefined' && actives.length > 0)
                 //    return actives[0].Url;
+
+                // bad hack
+                var active = $('.itemCarousel.active');
+                if (active.length > 0)
+                    return active.attr('url')                
                 
                 return "";
             }
