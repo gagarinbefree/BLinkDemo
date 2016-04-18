@@ -238,7 +238,7 @@
             $scope.posts = [];
 
             $scope.loadPreview = function () {
-                $http({ method: "post", url: 'http://localhost/BLink/Api/Preview', data: '=' + $scope.link })
+                $http({ method: "post", url: 'http://194.87.144.48/BLink/Api/Preview', data: '=' + $scope.link })
                 .success(function (data) {
                     if (typeof (data) !== "undefined" && data !== null) {
 
