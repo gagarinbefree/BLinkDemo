@@ -1,4 +1,4 @@
-﻿previewApp.controller("previewController", function ($scope, $http, imagesService, dateService) {
+﻿previewApp.controller("previewController", function ($scope, $http, imagesService, dateService) {    
     $scope.link = "";
     $scope.preview = null;
     $scope.list = null;
