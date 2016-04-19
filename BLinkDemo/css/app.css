@@ -1,0 +1,55 @@
+﻿*{
+    border-radius:0px; -moz-border-radius:0px; -webkit-border-radius:0px
+}
+.jumbotron h1 small
+{
+    display:block
+}
+
+.jumbotron p {
+    width:500px
+}
+
+.hidden {
+    display: none
+}
+
+.content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    vertical-align: bottom;
+    background-size:120%;
+
+    -webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.content:hover {
+    background-size:100%;
+}
+
+.box {
+    position: relative;
+    width: 100%; /* desired width */
+    background-color:gray;
+}
+
+.box:before {
+    content: "";
+    display: block;
+    padding-top: 42.86%; /* initial ratio of 1:1*/
+}
+
+.hostLabel {
+    position: absolute;
+    margin-top: 5px;
+    margin-left: 10px;
+    z-index: 2;
+}

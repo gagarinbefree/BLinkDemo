@@ -18,9 +18,16 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="css\app.css" />
     <Content Include="index.html" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="js\app.js" />
+    <Content Include="js\controllers\previewController.js" />
+    <Content Include="js\directives\backImage.js" />
+    <Content Include="js\services\dateService.js" />
+    <Content Include="js\services\imageService.js" />
+    <None Include="ruvds.pubxml" />
     <Content Include="web.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
@@ -29,6 +36,7 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>

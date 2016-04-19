@@ -3,94 +3,39 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Facebook-Like Preview</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" />            
-        
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>        
+    <title>Facebook-Like Preview</title>    
+
+    <link href="css/app.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" />                                    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.1/ui-bootstrap-tpls.min.js"></script>    
-    
-    <style>
-        *{border-radius:0px; -moz-border-radius:0px; -webkit-border-radius:0px}
-        .jumbotron h1 small
-        {
-            display:block
-        }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.1/ui-bootstrap-tpls.min.js"></script>
 
-        .jumbotron p {
-            width:500px
-        }
-
-        .hidden {
-            display: none
-        }
-
-        .content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            vertical-align: bottom;
-            background-size:120%;
-
-            -webkit-transition: all 0.5s ease-in-out;
-            transition: all 0.5s ease-in-out;
-        }
-
-        .content:hover {
-            background-size:100%;
-        }
-
-       .box {
-            position: relative;
-            width: 100%; /* desired width */
-            background-color:gray;
-        }
-
-        .box:before {
-            content: "";
-            display: block;
-            padding-top: 42.86%; /* initial ratio of 1:1*/
-        }
-
-        .hostLabel {
-            position: absolute;
-            margin-top: -48px;
-            margin-left: 10px;
-        }
-
-    </style>
+    <script src="js/app.js"></script>
+    <script src="js/controllers/previewController.js"></script>
+    <script src="js/directives/backImage.js"></script>
+    <script src="js/services/dateService.js"></script>
+    <script src="js/services/imageService.js"></script>
 </head>
 <body>
-    
-
     <div class="container-fluid">
         <div class="row">
             <div class="jumbotron text-center">
                 <h1>Facebook-Like Link Preview</h1>                
             </div>
         </div>
-    </div>
-    
+    </div>    
     <br />
-
     <div ng-app="previewApp" ng-controller="previewController">
         <div class="row">
             <div class="hidden-xs hidden-sm col-md-4"></div>
             <div class="col-xs-12 col-sm-12 col-md-4">
-
                 <div class="form-group">
                     <input type="text" class="form-control input-lg" ng-model="link">
                 </div>
                 <button class="btn btn-success btn-lg pull-right" ng-click="loadPreview()"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> submit</button>
-
             </div>
             <div class="hidden-xs hidden-sm col-md-4"></div>
         </div>
@@ -98,8 +43,7 @@
 
         <div ng-show="error.length > 0">
             <div class="row">
-                <div class="hidden-xs hidden-sm col-md-4"></div>
-                
+                <div class="hidden-xs hidden-sm col-md-4"></div>                
                 <div class="col-xs-12 col-sm-12 col-md-4">
                     <div class="alert alert-danger" role="alert">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -107,7 +51,6 @@
                         {{error}}
                     </div>
                 </div>             
-
                 <div class="hidden-xs hidden-sm col-md-4"></div>
             </div>
         </div>
@@ -117,7 +60,7 @@
             <div class="row">
                 <div class="hidden-xs hidden-sm col-md-4"></div>
                 <div class="col-xs-12 col-sm-12 col-md-4">
-                    <div class="lead" ng-bind="preview.Title"></div>
+                      <h4 ng-bind="preview.Title"></h4>
                 </div>
                 <div class="hidden-xs hidden-sm col-md-4"></div>
             </div>
@@ -125,29 +68,26 @@
             <!--CAROUSEL-->
             <div class="row">
                 <div class="hidden-xs hidden-sm col-md-4"></div>
-
                 <div class="col-xs-12 col-sm-12 col-md-4">
+                    <div ng-show="preview.Images.length > 0" class="hostLabel">
+                        <h4><span class="label label-default"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> {{preview.Host}}</span></h4>
+                    </div>
                     <uib-carousel active="active" interval="0" no-wrap="noWrapSlides" id="previewCarousel">
                         <uib-slide ng-repeat="image in preview.Images" active="image.Active" index="$index" ng-model="image.Active" class="itemCarousel" url="{{image.Url}}">
                             <div class="box" ng-model="image.Active">
-                                <div class="hover-zoom content" back-img="{{image.Url}}"></div>
-
-                                <div class="hostLabel">
-                                    <h4><span class="label label-default"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> {{preview.Host}}</span></h4>
-                                </div>
+                                <div class="hover-zoom content" back-img="{{image.Url}}"></div>                                
                             </div>
                         </uib-slide>
                     </uib-carousel>
+                    <br />
                 </div>
-
                 <div class="hidden-xs hidden-sm col-md-4"></div>
             </div>
 
             <!--DESCRIPTION-->
             <div class="row">
                 <div class="hidden-xs hidden-sm col-md-4"></div>
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <br />
+                <div class="col-xs-12 col-sm-12 col-md-4">                    
                     <p>{{preview.Description}}</p>                    
                     <button class="btn btn-success btn-lg pull-right" ng-click="postPreview()"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> post</button>
 
@@ -164,7 +104,6 @@
             <!--HEAD-->
             <div class="row">
                 <div class="hidden-xs hidden-sm col-md-4"></div>
-
                 <div class="col-xs-12 col-sm-12 col-md-4">
                     <ul class="list-group">                        
                         <li class="list-group-item">
@@ -173,19 +112,15 @@
                         </li>
                     </ul>
                 </div>
-
                 <div class="hidden-xs hidden-sm col-md-4"></div>
             </div>
-
 
             <!--TITLE-->
             <div class="row">
                 <div class="hidden-xs hidden-sm col-md-4"></div>
-
                 <div class="col-xs-12 col-sm-12 col-md-4">
-                    <div class="lead">{{post.Title}}</div>
+                    <h4>{{post.Title}}</h4>
                 </div>
-
                 <div class="hidden-xs hidden-sm col-md-4"></div>
             </div>
 
@@ -193,18 +128,17 @@
             <div ng-show="post.Image.length > 0">
                 <div class="row">
                     <div class="hidden-xs hidden-sm col-md-4"></div>
-
                     <div class="col-xs-12 col-sm-12 col-md-4">
+                        <div class="hostLabel">
+                            <h4><span class="label label-default"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {{post.Host}}</span></h4>
+                        </div>
                         <div class="box">
                             <div class="hover-zoom content" back-img="{{post.Image}}"></div>
-                            <a href="{{post.Url}}" target="_blank">
-                                <div class="hostLabel">
-                                    <h4><span class="label label-default"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {{post.Host}}</span></h4>
-                                </div>
+                            <a href="{{post.Url}}" target="_blank">                               
                             </a>
                         </div>
+                        <br />
                     </div>
-
                     <div class="hidden-xs hidden-sm col-md-4"></div>
                 </div>
             </div>
@@ -212,122 +146,15 @@
             <!--DESCRIPTION-->
             <div class="row">                    
                 <div class="hidden-xs hidden-sm col-md-4"></div>
-
-                <div class="col-xs-12 col-sm-12 col-md-4">
-                    <br />
+                <div class="col-xs-12 col-sm-12 col-md-4">                    
                     <p>{{post.Description}}</p>                  
                     <br />
-                </div>
-                    
+                </div>                    
                 <div class="hidden-xs hidden-sm col-md-4"></div>
             </div>
-
             <br />
         </div>
-    </div>    
-    
-        
-    <script>
-        var previewApp = angular.module("previewApp", ['ui.bootstrap']);
-
-        previewApp.controller("previewController", function ($scope, $http, imagesService, dateService) {
-            $scope.link = "";
-            $scope.preview = null;
-            $scope.list = null;
-            $scope.error = "";
-            $scope.posts = [];
-
-            $scope.loadPreview = function () {
-                $http({ method: "post", url: 'http://194.87.144.48/BLink/Api/Preview', data: '=' + $scope.link })
-                .success(function (data) {
-                    if (typeof (data) !== "undefined" && data !== null) {
-
-                        imagesService.setActiveImage(data, 0);
-
-                        $scope.preview = data;
-                        $scope.link = "";
-                        $scope.error = "";
-                    }
-                })
-                .error(function (errMessage) {
-                    $scope.preview = null;
-                    $scope.link = "";
-                    $scope.error = errMessage;
-                });
-            }
-
-            $scope.postPreview = function () {
-                var sp = $scope.preview;
-                $scope.posts.splice(0, 0, {
-                    Title: sp.Title
-                    , Image: imagesService.getActiveImage(sp.Images)
-                    , Description: sp.Description
-                    , Text: sp.Text
-                    , Url: sp.Url
-                    , Host: sp.Host
-                    , DateTime: dateService.getDateString(new Date())
-                });
-
-                $scope.preview = null;
-            }
-
-            $scope.removePreview = function (index) {
-                $scope.posts.splice(index, 1);
-            }
-
-        }).config(function ($httpProvider) {
-            $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-
-            $httpProvider.defaults.useXDomain = true;
-            delete $httpProvider.defaults.headers.common['X-Requested-With'];
-        });
-
-        previewApp.directive('backImg', function () {
-            return function (scope, element, attrs) {
-                var url = attrs.backImg;
-                element.css({
-                    'background-image': 'url(' + url + ')'                    
-                });
-            }
-        });
-
-        previewApp.service('imagesService', function() {
-            this.setActiveImage = function (data, index) {
-                for (var ii = 0; ii < data.Images.length; ii++) {
-                    data.Images[ii] = {
-                        Url: data.Images[ii]
-                        , Active: ii == index 
-                    }
-                }
-            }
-     
-            this.getActiveImage = function (images) {
-
-                // not work
-                //var actives = images.filter(function (s) { return s.Active; });
-                //if (typeof (actives) !== 'undefined' && actives.length > 0)
-                //    return actives[0].Url;
-
-                // bad hack
-                var active = $('.itemCarousel.active');
-                if (active.length > 0)
-                    return active.attr('url')                
-                
-                return "";
-            }
-        });
-
-        previewApp.service('dateService', function () {
-            this.getDateString = function (d) {
-                return ('00' + (d.getMonth() + 1)).slice(-2) + '.' 
-                    + ('00' + d.getDate()).slice(-2) + '.'
-                    + d.getFullYear() + " "
-                    + ('00' + d.getHours()).slice(-2) + ':'
-                    + ('00' + d.getMinutes()).slice(-2) + ':'
-                    + ('00' + d.getSeconds()).slice(-2);
-            }
-        });
-    </script>
+    </div>        
 </body>
 </html>
 
