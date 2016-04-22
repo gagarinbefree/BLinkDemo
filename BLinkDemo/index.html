@@ -70,7 +70,7 @@
                 <div class="hidden-xs hidden-sm col-md-4"></div>
                 <div class="col-xs-12 col-sm-12 col-md-4">
                     <div ng-show="preview.Images.length > 0" class="hostLabel">
-                        <h4><span class="label label-default"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> {{preview.Host}}</span></h4>
+                        <h4><span class="label label-default"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span>{{preview.Host}}</span></h4>
                     </div>
                     <uib-carousel active="active" interval="0" no-wrap="noWrapSlides" id="previewCarousel">
                         <uib-slide ng-repeat="image in preview.Images" active="image.Active" index="$index" ng-model="image.Active" class="itemCarousel" url="{{image.Url}}">
@@ -130,7 +130,11 @@
                     <div class="hidden-xs hidden-sm col-md-4"></div>
                     <div class="col-xs-12 col-sm-12 col-md-4">
                         <div class="hostLabel">
-                            <h4><span class="label label-default"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {{post.Host}}</span></h4>
+                            <a class="label label-default" href="{{post.Url}}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>{{post.Host}}</a>
+
+
+
+                            <!--<h4><span class="label label-default"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><a href="{{post.Url}}">{{post.Host}}</a></span></h4>-->
                         </div>
                         <div class="box">
                             <div class="hover-zoom content" back-img="{{post.Image}}"></div>
